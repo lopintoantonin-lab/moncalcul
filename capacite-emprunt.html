@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcul de capacité d'emprunt 2026 — Combien puis-je emprunter ? | MonCalcul</title>
+<meta name="description" content="Calculez gratuitement votre capacité d'emprunt immobilier en 2026 : montant empruntable selon vos revenus, vos charges et le taux d'endettement de 35 %.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="logo" href="index.html">Mon<span>Calcul</span></a>
+  <div class="nav-links">
+    <a href="capacite-emprunt.html">Emprunt</a>
+    <a href="salaire-brut-net.html">Salaire</a>
+    <a href="indemnite-licenciement.html">Indemnités</a>
+  </div>
+</div></nav>
+
+<main class="wrap page">
+  <div class="crumb"><a href="index.html">Accueil</a> › Capacité d'emprunt</div>
+  <h1>Capacité d'emprunt : combien puis-je emprunter ?</h1>
+  <p class="lead">Estimez le montant que vous pouvez emprunter pour votre projet immobilier, en respectant la limite de 35 % de taux d'endettement appliquée par les banques.</p>
+
+  <div class="calc">
+    <div class="field">
+      <label>Revenus nets mensuels du foyer <span class="hint">(salaires + revenus stables)</span></label>
+      <input type="number" id="rev" placeholder="ex : 3200" inputmode="numeric">
+    </div>
+    <div class="field">
+      <label>Charges de crédit mensuelles <span class="hint">(autres prêts en cours, pension…)</span></label>
+      <input type="number" id="charges" placeholder="ex : 200" inputmode="numeric">
+    </div>
+    <div class="inline">
+      <div class="field">
+        <label>Taux d'intérêt annuel <span class="hint">(%)</span></label>
+        <input type="number" id="taux" placeholder="ex : 3.5" step="0.01" inputmode="decimal">
+      </div>
+      <div class="field">
+        <label>Durée <span class="hint">(années)</span></label>
+        <input type="number" id="duree" placeholder="ex : 25" inputmode="numeric">
+      </div>
+    </div>
+    <div class="field">
+      <label>Apport personnel <span class="hint">(optionnel)</span></label>
+      <input type="number" id="apport" placeholder="ex : 20000" inputmode="numeric">
+    </div>
+    <button class="btn" onclick="calc()">Calculer ma capacité</button>
+
+    <div class="result" id="res">
+      <div class="lbl">Vous pouvez emprunter environ</div>
+      <div class="big" id="capital">—</div>
+      <div class="row"><span>Mensualité maximale (assurance comprise)</span><b id="mens">—</b></div>
+      <div class="row"><span>Budget total avec apport</span><b id="total">—</b></div>
+    </div>
+  </div>
+
+  <div class="note">⚠️ Estimation indicative. Le montant réel dépend de votre profil, du coût de l'assurance emprunteur et de la politique de chaque banque. Le taux d'endettement maximum recommandé par le HCSF est de 35 % (assurance incluse).</div>
+
+  <h2>Comment se calcule la capacité d'emprunt ?</h2>
+  <p>Les banques limitent vos mensualités de crédit à <strong>35 % de vos revenus nets</strong> (taux d'endettement). On retire d'abord vos charges de crédit existantes, ce qui donne la mensualité maximale disponible pour votre nouveau prêt. À partir de cette mensualité, du taux d'intérêt et de la durée, on remonte au capital que vous pouvez emprunter.</p>
+  <p>La formule utilisée est celle d'un prêt à mensualités constantes :</p>
+  <ul>
+    <li><strong>Mensualité max</strong> = (revenus × 35 %) − charges existantes</li>
+    <li><strong>Capital</strong> = mensualité × [1 − (1 + t)<sup>−n</sup>] / t, où <em>t</em> est le taux mensuel et <em>n</em> le nombre de mois</li>
+  </ul>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Le taux de 35 % est-il obligatoire ?</dt>
+    <dd>C'est la limite recommandée par le Haut Conseil de stabilité financière. Les banques peuvent y déroger pour une minorité de dossiers, mais la majorité s'y tient.</dd>
+    <dt>L'assurance emprunteur est-elle comprise ?</dt>
+    <dd>Oui, le taux d'endettement de 35 % inclut l'assurance. Notre estimation raisonne sur la mensualité totale ; comptez environ 0,1 à 0,4 % du capital par an pour l'assurance.</dd>
+    <dt>Un apport augmente-t-il ma capacité ?</dt>
+    <dd>L'apport ne change pas le montant empruntable, mais il augmente votre budget total et rassure la banque, ce qui peut améliorer votre taux.</dd>
+  </dl>
+</main>
+
+<footer><div class="wrap">
+  <div>© 2026 MonCalcul</div>
+  <div>Estimation à valeur indicative.</div>
+</div></footer>
+
+<script>
+function eur(n){return n.toLocaleString('fr-FR',{maximumFractionDigits:0})+' €';}
+function calc(){
+  var rev=parseFloat(document.getElementById('rev').value)||0;
+  var charges=parseFloat(document.getElementById('charges').value)||0;
+  var taux=parseFloat(document.getElementById('taux').value)||0;
+  var duree=parseFloat(document.getElementById('duree').value)||0;
+  var apport=parseFloat(document.getElementById('apport').value)||0;
+  if(rev<=0||taux<=0||duree<=0){alert('Renseignez au moins vos revenus, le taux et la durée.');return;}
+  var mens=rev*0.35-charges;
+  if(mens<=0){alert("Vos charges actuelles dépassent déjà 35 % de vos revenus.");return;}
+  var t=taux/100/12, n=duree*12;
+  var capital=mens*(1-Math.pow(1+t,-n))/t;
+  document.getElementById('capital').textContent=eur(capital);
+  document.getElementById('mens').textContent=eur(mens);
+  document.getElementById('total').textContent=eur(capital+apport);
+  document.getElementById('res').classList.add('show');
+}
+</script>
+</body>
+</html>

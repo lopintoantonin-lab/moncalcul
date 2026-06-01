@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salaire brut en net 2026 — Calcul rapide et gratuit | MonCalcul</title>
+<meta name="description" content="Convertissez votre salaire brut en net en 2026 : estimation pour les statuts non-cadre et cadre, mensuel et annuel. Calcul gratuit et instantané.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="logo" href="index.html">Mon<span>Calcul</span></a>
+  <div class="nav-links">
+    <a href="capacite-emprunt.html">Emprunt</a>
+    <a href="salaire-brut-net.html">Salaire</a>
+    <a href="indemnite-licenciement.html">Indemnités</a>
+  </div>
+</div></nav>
+
+<main class="wrap page">
+  <div class="crumb"><a href="index.html">Accueil</a> › Salaire brut en net</div>
+  <h1>Salaire brut en net : calcul rapide</h1>
+  <p class="lead">Estimez votre salaire net à partir du brut, selon votre statut. Les cotisations salariales représentent environ 22 % du brut pour un non-cadre et 25 % pour un cadre.</p>
+
+  <div class="calc">
+    <div class="field">
+      <label>Salaire brut</label>
+      <input type="number" id="brut" placeholder="ex : 3000" inputmode="numeric">
+    </div>
+    <div class="inline">
+      <div class="field">
+        <label>Statut</label>
+        <select id="statut">
+          <option value="0.22">Non-cadre (≈ 22 % de charges)</option>
+          <option value="0.25">Cadre (≈ 25 % de charges)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Période</label>
+        <select id="periode">
+          <option value="1">Mensuel</option>
+          <option value="12">Annuel</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" onclick="calc()">Calculer mon net</button>
+
+    <div class="result" id="res">
+      <div class="lbl">Salaire net estimé (avant impôt sur le revenu)</div>
+      <div class="big" id="net">—</div>
+      <div class="row"><span>Charges salariales</span><b id="cot">—</b></div>
+      <div class="row"><span>Soit un net mensuel d'environ</span><b id="mensuel">—</b></div>
+    </div>
+  </div>
+
+  <div class="note">⚠️ Estimation. Le taux exact dépend de votre convention collective, de votre mutuelle et des heures supplémentaires. Le résultat est un <strong>net avant impôt sur le revenu</strong> (le prélèvement à la source s'applique ensuite).</div>
+
+  <h2>Brut, net, net après impôt : quelle différence ?</h2>
+  <ul>
+    <li><strong>Salaire brut</strong> : le montant inscrit sur votre contrat, avant cotisations.</li>
+    <li><strong>Salaire net</strong> : ce qui reste après les cotisations sociales (Sécurité sociale, retraite, chômage…).</li>
+    <li><strong>Net après impôt</strong> : le net une fois le prélèvement à la source déduit.</li>
+  </ul>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Pourquoi un cadre a-t-il plus de charges ?</dt>
+    <dd>Les cadres cotisent davantage pour la retraite complémentaire et la prévoyance, d'où un taux de charges légèrement supérieur (≈ 25 % contre ≈ 22 %).</dd>
+    <dt>Ce calcul inclut-il l'impôt ?</dt>
+    <dd>Non, il donne le net avant impôt. Le prélèvement à la source dépend de votre taux personnel et s'applique sur ce net.</dd>
+  </dl>
+</main>
+
+<footer><div class="wrap">
+  <div>© 2026 MonCalcul</div>
+  <div>Estimation à valeur indicative.</div>
+</div></footer>
+
+<script>
+function eur(n){return n.toLocaleString('fr-FR',{maximumFractionDigits:0})+' €';}
+function calc(){
+  var brut=parseFloat(document.getElementById('brut').value)||0;
+  var taux=parseFloat(document.getElementById('statut').value);
+  var per=parseFloat(document.getElementById('periode').value);
+  if(brut<=0){alert('Renseignez votre salaire brut.');return;}
+  var net=brut*(1-taux);
+  var cot=brut*taux;
+  document.getElementById('net').textContent=eur(net);
+  document.getElementById('cot').textContent=eur(cot);
+  document.getElementById('mensuel').textContent=eur(net/per);
+  document.getElementById('res').classList.add('show');
+}
+</script>
+</body>
+</html>
