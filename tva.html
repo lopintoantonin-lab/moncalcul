@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calcul de la TVA 2026 — Convertir HT en TTC (et l'inverse) | MonCalcul</title>
+<meta name="description" content="Calculez la TVA gratuitement : passez du HT au TTC ou du TTC au HT en un clic, aux taux français de 20 %, 10 %, 5,5 % et 2,1 %.">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="logo" href="index.html">Mon<span>Calcul</span></a>
+  <div class="nav-links">
+    <a href="capacite-emprunt.html">Emprunt</a>
+    <a href="salaire-brut-net.html">Salaire</a>
+    <a href="indemnite-licenciement.html">Indemnités</a>
+  </div>
+</div></nav>
+
+<main class="wrap page">
+  <div class="crumb"><a href="index.html">Accueil</a> › Calcul de la TVA</div>
+  <h1>Calcul de la TVA : HT en TTC et TTC en HT</h1>
+  <p class="lead">Convertissez un montant hors taxes en toutes taxes comprises, ou l'inverse, aux taux de TVA français.</p>
+
+  <div class="calc">
+    <div class="field">
+      <label>Montant</label>
+      <input type="number" id="montant" placeholder="ex : 100" step="0.01" inputmode="decimal">
+    </div>
+    <div class="inline">
+      <div class="field">
+        <label>Sens du calcul</label>
+        <select id="sens">
+          <option value="htttc">HT → TTC (ajouter la TVA)</option>
+          <option value="ttcht">TTC → HT (retirer la TVA)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Taux de TVA</label>
+        <select id="taux">
+          <option value="0.20">20 % — taux normal</option>
+          <option value="0.10">10 % — intermédiaire</option>
+          <option value="0.055">5,5 % — réduit</option>
+          <option value="0.021">2,1 % — particulier</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" onclick="calc()">Calculer</button>
+
+    <div class="result" id="res">
+      <div class="lbl" id="lbl">Résultat</div>
+      <div class="big" id="principal">—</div>
+      <div class="row"><span>Montant HT</span><b id="ht">—</b></div>
+      <div class="row"><span>Montant de la TVA</span><b id="tva">—</b></div>
+      <div class="row"><span>Montant TTC</span><b id="ttc">—</b></div>
+    </div>
+  </div>
+
+  <div class="note">💡 Le taux de 20 % s'applique à la majorité des biens et services. Les taux réduits (10 %, 5,5 %, 2,1 %) concernent certains secteurs : restauration, travaux, alimentation, livres, médicaments…</div>
+
+  <h2>Comment calculer la TVA ?</h2>
+  <ul>
+    <li><strong>Du HT au TTC</strong> : TTC = HT × (1 + taux). Exemple à 20 % : 100 € HT → 100 × 1,20 = <strong>120 € TTC</strong>.</li>
+    <li><strong>Du TTC au HT</strong> : HT = TTC ÷ (1 + taux). Exemple à 20 % : 120 € TTC → 120 ÷ 1,20 = <strong>100 € HT</strong>.</li>
+    <li><strong>Montant de la TVA</strong> : TVA = TTC − HT.</li>
+  </ul>
+
+  <h2>Questions fréquentes</h2>
+  <dl class="faq">
+    <dt>Quels sont les taux de TVA en France ?</dt>
+    <dd>20 % (taux normal), 10 % (intermédiaire : restauration, transport, certains travaux), 5,5 % (réduit : alimentation, livres, énergie), 2,1 % (particulier : médicaments remboursables, presse).</dd>
+    <dt>Comment retrouver le HT à partir du TTC à 20 % ?</dt>
+    <dd>On divise le TTC par 1,20. Diviser par 1,2 (et non multiplier par 0,8) est la méthode exacte.</dd>
+    <dt>Un auto-entrepreneur facture-t-il la TVA ?</dt>
+    <dd>Tant qu'il reste sous les seuils de franchise, il facture en HT sans TVA (mention « TVA non applicable, art. 293 B du CGI »).</dd>
+  </dl>
+</main>
+
+<footer><div class="wrap">
+  <div>© 2026 MonCalcul</div>
+  <div>Estimation à valeur indicative.</div>
+</div></footer>
+
+<script>
+function eur(n){return n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
+function calc(){
+  var m=parseFloat(document.getElementById('montant').value)||0;
+  var sens=document.getElementById('sens').value;
+  var t=parseFloat(document.getElementById('taux').value);
+  if(m<=0){alert('Renseignez un montant.');return;}
+  var ht,ttc;
+  if(sens==='htttc'){ ht=m; ttc=m*(1+t); document.getElementById('lbl').textContent='Montant TTC'; }
+  else { ttc=m; ht=m/(1+t); document.getElementById('lbl').textContent='Montant HT'; }
+  var tva=ttc-ht;
+  document.getElementById('principal').textContent=eur(sens==='htttc'?ttc:ht);
+  document.getElementById('ht').textContent=eur(ht);
+  document.getElementById('tva').textContent=eur(tva);
+  document.getElementById('ttc').textContent=eur(ttc);
+  document.getElementById('res').classList.add('show');
+}
+</script>
+</body>
+</html>
